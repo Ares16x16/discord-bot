@@ -24,7 +24,7 @@ async def on_command_error(ctx, error):
         await ctx.send(f"Unknown command. Use `{bot.command_prefix}help` for help.") 
         
 # Help           
-@bot.command()
+@bot.hybrid_command()
 async def help(ctx):
     prefix = bot.command_prefix
 
@@ -58,10 +58,10 @@ async def ping(ctx):
 ### Poll ###
 # Poll Reaction
 @bot.command()
-async def reactionPoll(ctx, title, question, *options):
+async def reaction_poll(ctx, title, question, *options):
     await discord_poll.poll_reaction(ctx, title, question, *options)
 
-@reactionPoll.error
+@reaction_poll.error
 async def poll_reaction_error(ctx, error):
     await discord_poll.poll_reaction_error(ctx, error)
 
@@ -77,10 +77,10 @@ async def advance_poll_error(ctx, error):
 ### Role ###
 # Roll creation
 @bot.command()
-async def createRole(ctx, role_name, emoji):
-    await discord_role.create_role(ctx, role_name, emoji)
+async def create_role(ctx, channel, *roleset):
+    await discord_role.create_role(ctx, channel, *roleset)
     
-@createRole.error
+@create_role.error
 async def create_role_error(ctx, error):
     await discord_role.create_role_error(ctx, error)    
     

@@ -15,59 +15,55 @@ class RoleAssignmentView(discord.ui.View):
             options.append(discord.SelectOption(label=role, emoji=emoji, value=role))
 
         self.select = discord.ui.Select(placeholder="Select a role", options=options)
-        self.add_item(self.select)
-        
+        self.add_item(self.select) 
+
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        return interaction.user == self.message.author
+        await interaction.response.defer()
+        #user = str(interaction.user)
+        data = str(interaction.data["values"][0])
+        role = discord.utils.get(interaction.guild.roles, name=data)
+        if role:
+            await interaction.user.add_roles(role)
+            #await interaction.channel.send(f"Assigned role: {data}")
+        else: 
+            #await interaction.channel.send("Role not found")  
+            pass
 
     async def on_timeout(self):
-        await self.message.channel.send("Timeout")
+        #await self.message.channel.send("Timeout")
         await self.disable_all_items()
         
     async def disable_all_items(self):
         for item in self.children:
             item.disabled = True
         await self.message.edit(view=self)
-        
-    async def on_select(self, interaction: discord.Interaction, select: discord.ui.Select):
-        selected = select.values[0]
-        role = discord.utils.get(interaction.guild.roles, name=selected)
-        
-        if role:
-            await interaction.user.add_roles(role)
-            await interaction.response.send_message(f"Assigned role: {selected}", ephemeral=True)
-        else:
-            await interaction.response.send_message("Role not found", ephemeral=True)
-        
-        await self.disable_all_items()
-        self.stop()
+    
 
-async def create_role(ctx, *args):
+async def create_role(ctx, ch, *args):
+    print(args)
     if len(args) % 2 != 0:
-        await ctx.send("Wrong format. Example: !create_role [name of role] [emoji] [name of role] [emoji]...")
+        await ctx.send("Wrong format. Example: !create_role [CHANNEL ID] [ROLE NAME] [EMOJI] [name of role] [emoji]...")
         return
-    
+    channel = bot.get_channel(int(ch))
     roles = list(zip(args[::2], args[1::2]))
-    
+
     for role_name, emoji in roles:
         await ctx.guild.create_role(name=role_name)
         
     view = RoleAssignmentView(roles)
-    message = await ctx.send("Choose a role:", view=view)
+    message = await channel.send("Choose a role:", view=view)
     view.message = message
     
     await view.wait()
     
     if view.timeout:
         await view.disable_all_items()
-        print("Timeout")
-    else:
-        print("Role assigned!")
+        print("Role Select Timeout")
 
 async def create_role_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(
-            "Wrong format. Example:\n`!create_role [name of role] [emoji] [name of role] [emoji]...`"
+            "Wrong format. Example: !create_role [CHANNEL ID] [ROLE NAME] [EMOJI] [name of role] [emoji]...`"
         )
     else:
-        await ctx.send(str(error))
+        await ctx.send("Error in role creation, please try again later.")

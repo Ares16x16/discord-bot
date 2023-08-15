@@ -30,7 +30,7 @@ async def poll_reaction(ctx, title, question, *options):
         
 async def poll_reaction_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Wrong format. Example: \n`!reactionPoll \"[TITLE_OF_POLL]\" \"[YOUR_QUESTION]\" \"[OPTIONS]\" \"[OPTIONS]\" \"[OPTIONS]\"`")
+        await ctx.send("Wrong format. Example: \n`!reaction_poll \"[TITLE_OF_POLL]\" \"[YOUR_QUESTION]\" \"[OPTIONS]\" \"[OPTIONS]\" \"[OPTIONS]\"`")
     else:
         await ctx.send("An error occurred while creating the poll. Please try again.")
         
@@ -87,7 +87,7 @@ async def advance_poll(ctx, title, question, *options):
 async def advance_poll_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(
-            "Wrong format. Example: \n`!advancePoll \"[TITLE_OF_POLL]\" \"[YOUR_QUESTION]\" \"[OPTIONS]\" \"[OPTIONS]\" \"[OPTIONS]\"`"
+            "Wrong format. Example: \n`!advance_poll \"[TITLE_OF_POLL]\" \"[YOUR_QUESTION]\" \"[OPTIONS]\" \"[OPTIONS]\" \"[OPTIONS]\"`"
         )
     else:
         await ctx.send(str(error))

@@ -1,3 +1,6 @@
 # discord-bot
 
-TO-DO
+TO-DO:
+reactionPoll DONE
+advancePoll
+roleCreate

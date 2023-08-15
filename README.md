@@ -1,6 +1,6 @@
 # discord-bot
 
 TO-DO:
-1. reactionPoll   DONE
-2. advancePoll
-3. roleCreate     DONE
+1. Reaction Poll   DONE
+2. Button Poll    DONE
+3. Role Create     DONE

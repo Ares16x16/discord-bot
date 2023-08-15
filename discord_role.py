@@ -1,5 +1,4 @@
 import discord
-
 from discord import Embed, Interaction, Color
 from discord.ext import commands
 from discord.ui import View, Button
@@ -9,7 +8,8 @@ from discordBot_settings import *
 
 class RoleAssignmentView(discord.ui.View):
     def __init__(self, roles):
-        super().__init__(timeout=60)
+        #super().__init__(timeout=60)
+        super().__init__()
         options = []
         for role, emoji in roles:
             options.append(discord.SelectOption(label=role, emoji=emoji, value=role))
@@ -17,7 +17,7 @@ class RoleAssignmentView(discord.ui.View):
         self.select = discord.ui.Select(placeholder="Select a role", options=options)
         self.add_item(self.select) 
 
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+    async def interaction_check(self, interaction: discord.Interaction):
         await interaction.response.defer()
         #user = str(interaction.user)
         data = str(interaction.data["values"][0])
@@ -40,7 +40,7 @@ class RoleAssignmentView(discord.ui.View):
     
 
 async def create_role(ctx, ch, *args):
-    print(args)
+    #print(args)
     if len(args) % 2 != 0:
         await ctx.send("Wrong format. Example: !create_role [CHANNEL ID] [ROLE NAME] [EMOJI] [name of role] [emoji]...")
         return

@@ -1,9 +1,13 @@
-import discord
+import random
 
+import discord
 from discord.ext import commands
 
 import discord_poll
 import discord_role
+import discord_play
+import discord_music
+import discord_utils
 from discordBot_settings import *
 
 
@@ -67,10 +71,10 @@ async def poll_reaction_error(ctx, error):
 
 # Poll Button
 @bot.command()
-async def advancePoll(ctx, title, question, *options):
-    await discord_poll.advance_poll(ctx, title, question, *options)
+async def advance_poll(ctx, title, question, timeout, *options):
+    await discord_poll.advance_poll(ctx, title, question, timeout, *options)
 
-@advancePoll.error
+@advance_poll.error
 async def advance_poll_error(ctx, error):
     await discord_poll.advance_poll_error(ctx, error)
 
@@ -84,8 +88,20 @@ async def create_role(ctx, channel, *roleset):
 async def create_role_error(ctx, error):
     await discord_role.create_role_error(ctx, error)    
     
+### Play ###   
+@bot.hybrid_command()
+async def random_ping(ctx, verb="ping"):
+    """
+    You can ping a random guy with a verb
+    """
+    await discord_play.random_ping(ctx, verb)
+
+@bot.hybrid_command()
+async def dice(ctx, xdx="1d6"):
+    """
+    Dice!
+    """
+    await discord_play.dice(ctx, xdx)
+        
     
-    
-    
-    
-bot.run('ODc0Mjg5MTg2MDUwNTY0MTA2.GPWv89.pRl9fZ94EezZ-5d1RsFa8QwHpWXtr5JdD5n-z8')
+bot.run('')

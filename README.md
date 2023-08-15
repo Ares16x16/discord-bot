@@ -1,6 +1,8 @@
 # discord-bot
 
-TO-DO:
-1. Reaction Poll   DONE
-2. Button Poll    DONE
-3. Role Create     DONE
+Current Function List:
+1. Reaction Poll
+2. Button Poll
+3. Role Create (Reaction)
+4. Random Ping
+5. Dice

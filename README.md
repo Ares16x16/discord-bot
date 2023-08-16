@@ -6,3 +6,4 @@ Current Function List:
 3. Role Create (Reaction)
 4. Random Ping
 5. Dice
+6. Join & leave VC

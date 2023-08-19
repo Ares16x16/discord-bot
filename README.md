@@ -1,6 +1,7 @@
 # discord-bot
-
-Current Function List:
+### Dependency:
+- ffmpeg
+### Current Function List:
 1. Reaction Poll
 2. Button Poll
 3. Role Create (Reaction)

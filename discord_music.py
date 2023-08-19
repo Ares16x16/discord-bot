@@ -1,13 +1,16 @@
 import asyncio
 import io
+import ctypes
 
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord.voice_client import VoiceClient
 import youtube_dl
+import youtubesearchpython
 import random
-
+import numpy as np
+import soundfile as sf
 
 from discordBot_settings import *
 
@@ -64,7 +67,7 @@ async def custom_probe(source, executable):
     return codec, bitrate
 
 
-async def play(ctx):
+async def play_random(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel
         voice_client: VoiceClient = get(bot.voice_clients, guild=ctx.guild)
@@ -79,7 +82,7 @@ async def play(ctx):
             voice_client = await channel.connect()
             await ctx.send(f"Entering {channel.name}")
 
-        to_play = random.choice(sources)
+        song = random.choice(sources)
 
         # OpusAudio.from_probe
         """source = await discord.FFmpegOpusAudio.from_probe(
@@ -90,15 +93,14 @@ async def play(ctx):
         voice_client.play(source)"""
 
         # PC Audio
-        voice_client.play(
-            (
-                discord.FFmpegPCMAudio(
-                    executable=r"D:/coding_workspace/Discord/ffmpeg-6.0-essentials_build/bin/ffmpeg.exe",
-                    source=to_play,
-                )
-            ),
-            after=lambda e: print("Done", e),
+        source = discord.FFmpegPCMAudio(
+            executable=r"D:/coding_workspace/Discord/ffmpeg-6.0-essentials_build/bin/ffmpeg.exe",
+            source=song,
         )
-        await ctx.send(f"Playing: {to_play}")
+        volume = discord.PCMVolumeTransformer(source, volume=0.5)
+        voice_client.play(volume)
+        await ctx.send(f"Playing: {song}")
     else:
         await ctx.send("You must be in a voice channel!")
+
+        voice_client.play(source)
